@@ -41,7 +41,7 @@ def filter_datum(fields: List[str], redaction: str, message: str, separator: str
 
 def get_logger() -> logging.Logger:
     '''returns a logger object named 'user_data' set to log up to INFO level'''
-    logger = logging.getlogger('user_data')
+    logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propagate = False
 
@@ -67,3 +67,25 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         database=db_name
     )
     return db_conn
+
+
+def main() -> None:
+    '''entry point'''
+    logger = get_logger()
+    db = get_db()
+    cur = db.cursor()
+    query = "SELECT * FROM users;"
+    cur.execute(query)
+    rows = cur.fetchall()
+
+    for row in rows:
+        message = ("name={}; email={}; phone={}; ssn={}; password={}; "
+                   "ip={}; last_login={}; user_agent={};").format(
+            row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
+        logger.info(message)
+    cur.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
