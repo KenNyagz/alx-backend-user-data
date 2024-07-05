@@ -6,7 +6,7 @@ import os
 import re
 import logging
 import mysql.connector
-from mysql.connector import connection
+from mysql.connector import connection, Error
 from typing import List
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
