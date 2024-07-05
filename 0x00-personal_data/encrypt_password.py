@@ -12,7 +12,4 @@ def hash_password(password: str) -> bytes:
 
 def is_valid(encrpd_pw: bytes, password: str) -> bool:
     '''checks if the password entered is correct'''
-    if bcrypt.checkpw(password.encode(), encrpd_pw):
-        return True
-    else:
-        return False
+    return bcrypt.checkpw(password.encode(), encrpd_pw):
