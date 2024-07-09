@@ -10,7 +10,21 @@ class Auth:
     '''Class to manage API authentication'''
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         '''Prompts the client authentication '''
-        return False
+        if path is None:
+            return True
+        if not excluded_paths or len(excluded_paths) == 0:
+            return True
+
+        if not path.endswith('/'):
+            path += '/'
+
+        excluded_paths = [exl_pth if exl_pth.endswith('/') else exl_pth + '/'
+                          for exl_pth in excluded_paths]
+
+        if path in excluded_paths:
+            return False
+
+        return True
 
     def authorization_header(self, request=None) -> str:
         '''Sets authorizations headers '''
