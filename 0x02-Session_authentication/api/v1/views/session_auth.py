@@ -8,11 +8,8 @@ from models.user import User
 import os
 from api.v1.app import auth
 
-#session_auth = Blueprint('session_auth', __name__, url_prefix='/api/v1/auth_session')
-
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-#@session_auth.route('/login', methods=['POST'], strict_slashes=False)
 def session_login():
     '''view for authorised user with valid session'''
     email = request.form.get('email')
