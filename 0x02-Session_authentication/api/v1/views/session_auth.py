@@ -6,7 +6,6 @@ from flask import request, jsonify
 from api.v1.views import app_views
 from models.user import User
 import os
-from api.v1.app import auth
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
@@ -29,6 +28,7 @@ def session_login():
     if not user.is_valid_password(password):
         return jsonify({'error': 'wrong password'}), 401
 
+    from api.v1.app import auth
     session_id = auth.create_session(user.id)
     response = jsonify(user.to_json())
 
@@ -36,3 +36,9 @@ def session_login():
     response.set_cookie(session_name, session_id)
 
     return response
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+def logout():
+    '''Deleting session and logging out user'''
+    
