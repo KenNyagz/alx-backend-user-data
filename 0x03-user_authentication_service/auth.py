@@ -37,8 +37,11 @@ class Auth:
         '''validates user by password if exists'''
         try:
             user = self._db.find_user_by(email=email)
-            return bcrypt.checkpw(password.encode('utf-8'),
-                                  user.hashed_password.encode('utf-8'))
+            if user and bcrypt.checkpw(password.encode('utf-8'),
+                                  user.hashed_password.encode('utf-8')):
+                  return True
+            else:
+                return False
         except NoResultFound:
             return False
         except Exception:
