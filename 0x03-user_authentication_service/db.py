@@ -49,10 +49,21 @@ class DB:
             if key not in valid_keys:
                 raise InvalidRequestError
 
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-        except NoResultFound:
+        search = self._session.query(User)
+        for key in kwargs:
+            if key == 'email':
+                result = search.filter(User.email == kwargs[key])
+            elif key == 'id':
+                result = search.filter(User.id == kwargs[key])
+            elif key == 'hashed_password':
+                result = search.filter(User.hashed_password == kwargs[key])
+            elif key == 'session_id':
+                result = search.filter(User.session_id == kwargs[key])
+            elif key == 'reset_token':
+                result = search.filter(User.reset_token == kwargs[key])
+
+        all_users =  result.all()
+        if not all_users:
             raise NoResultFound
-        except InvalidRequestError:
-            raise InvalidRequestError
-        return user
+        return all_users[0]
+          
