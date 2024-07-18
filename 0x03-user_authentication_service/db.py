@@ -40,9 +40,17 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         '''returns first row found in users table as filtered by input args'''
-        session = self._session
+        if not kwargs:
+            raise NoResultFound
+
+        valid_keys = ['email', 'id', 'hashed_password', 'session_id',
+                      'reset_token']
+        for key in kwargs:
+            if key not in valid_keys:
+                raise InvalidRequestError
+
         try:
-            user = session.query(User).filter_by(**kwargs).one()
+            user = self._session.query(User).filter_by(**kwargs).one()
             return user
         except NoResultFound:
             raise NoResultFound
