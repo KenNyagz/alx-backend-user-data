@@ -2,12 +2,17 @@
 '''
 Authentication handling
 '''
+import uuid
 import bcrypt
 # from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm.exc import NoResultFound
 from db import DB
 from user import User
 
+
+def _generate_uuid() -> str:
+    '''generates uuid'''
+    return str(uuid.uuid4())
 
 def _hash_password(password: str) -> bytes:
     '''takes in a password string arguments and returns bytes'''
