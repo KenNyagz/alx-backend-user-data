@@ -40,32 +40,13 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         '''returns first row found in users table as filtered by input args'''
-        if not kwargs:
-            raise NoResultFound
-
-        valid_keys = ['email', 'id', 'hashed_password', 'session_id',
-                      'reset_token']
-        for key in kwargs:
-            if key not in valid_keys:
-                raise InvalidRequestError
-
-        search = self._session.query(User)
-        for key in kwargs:
-            if key == 'email':
-                result = search.filter(User.email == kwargs[key])
-            elif key == 'id':
-                result = search.filter(User.id == kwargs[key])
-            elif key == 'hashed_password':
-                result = search.filter(User.hashed_password == kwargs[key])
-            elif key == 'session_id':
-                result = search.filter(User.session_id == kwargs[key])
-            elif key == 'reset_token':
-                result = search.filter(User.reset_token == kwargs[key])
-
-        all_users = result.all()
-        if not all_users:
-            raise NoResultFound
-        return all_users[0]
+        try:
+            user = self._session.query(User).filter_by(**kwargs).one()
+            return user
+        except NoResultFound:
+            raise NoResultFound("No user found with the given attributes")
+        except InvalidRequestError:
+            raise InvalidRequestError("Invalid query arguments")
 
     def update_user(self, user_id, **kwargs) -> None:
         '''updates specified user as directed by the key word args'''
