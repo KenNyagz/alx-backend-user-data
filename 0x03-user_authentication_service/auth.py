@@ -14,6 +14,7 @@ def _generate_uuid() -> str:
     '''generates uuid'''
     return str(uuid.uuid4())
 
+
 def _hash_password(password: str) -> bytes:
     '''takes in a password string arguments and returns bytes'''
     salt = bcrypt.gensalt()
