@@ -62,8 +62,7 @@ class DB:
             elif key == 'reset_token':
                 result = search.filter(User.reset_token == kwargs[key])
 
-        all_users =  result.all()
+        all_users = result.all()
         if not all_users:
             raise NoResultFound
         return all_users[0]
-          
