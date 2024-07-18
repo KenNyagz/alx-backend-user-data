@@ -9,7 +9,7 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-app.route('/')
+@app.route('/')
 def payload():
     '''returns a JSON payload of form'''
     return jsonify({"message": "Bienvenue"})
