@@ -37,7 +37,7 @@ def users():
 def login():
     '''handles user sessions'''
     email = request.form.get('email')
-    password =  request.form.get('password')
+    password = request.form.get('password')
 
     if not email or not password:
         abort(401)
