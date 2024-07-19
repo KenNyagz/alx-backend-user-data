@@ -94,8 +94,8 @@ class Auth:
     def update_password(self, reset_token, password):
         '''gets user with correspoding reset_token uuid, updates password'''
         try:
-            user = self._db.get_user_by(reset_token=reset_token)
-            salt = bcrypt.gen_salt()
+            user = self._db.find_user_by(reset_token=reset_token)
+            salt = bcrypt.gensalt()
             hashed_p = bcrypt.hashpw(password.encode('utf-8'), salt)
             self._db.update_user(user.id, hashed_password=hashed_p,
                                  reset_token=None)
