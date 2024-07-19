@@ -80,3 +80,13 @@ class Auth:
             self._db.update_user(user.id, session_id=None)
         except NoResultFound:
             pass
+
+    def get_reset_password_token(self, email):
+        '''sets reset token attribute for user with corresponding email'''
+        try:
+            user = self._db.find_user_by(email=email)
+            new_sessionID = _generate_uuid()
+            self._db.update_user(user.id, reset_token=new_sessionID)
+        except NoResultFound:
+            raise ValueError('No user with email {email}')
+        return new_sessionID
