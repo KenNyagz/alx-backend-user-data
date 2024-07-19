@@ -67,7 +67,7 @@ def logout():
         abort(403)
 
     AUTH.destroy_session(user.id)
-    redirect(url_for('welcome')
+    redirect(url_for('welcome'))
     # redirect('/')  #  Also fine
 
 
