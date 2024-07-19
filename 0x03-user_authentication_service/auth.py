@@ -90,3 +90,15 @@ class Auth:
         except NoResultFound:
             raise ValueError('No user with email {email}')
         return new_sessionID
+
+    def update_password(self, reset_token, password):
+        '''gets user with correspoding reset_token uuid, updates password'''
+        try:
+            user = self._db.get_user_by(reset_token=reset_token)
+            salt = bcrypt.gen_salt()
+            hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+            self._db.update_user(user.id, hashed_password=hashed,
+                                 reset_token=None)
+            return
+        except NoResultFound:
+            raise ValueError
